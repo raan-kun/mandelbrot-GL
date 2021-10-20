@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{f374ca1a-27b4-4417-ba50-8c83294bd2f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -32,10 +35,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex.glsl">
-      <Filter>Resource Files</Filter>
+      <Filter>Shader Files</Filter>
     </None>
     <None Include="fragment.glsl">
-      <Filter>Resource Files</Filter>
+      <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>
 </Project>

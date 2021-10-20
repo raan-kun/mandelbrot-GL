@@ -9,13 +9,15 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <unordered_map>
 
 class Shader
 {
-public:
+private:
 	// the program ID
 	unsigned int ID;
-
+	mutable std::unordered_map<std::string, GLint> uniformLocationCache;
+public:
 	// constructor reads and builds the shader
 	Shader(const char* vertexPath, const char* fragmentPath)
 	{
@@ -95,7 +97,7 @@ public:
 	}
 
 	// use/activate the shader
-	void use()
+	void use() const
 	{
 		glUseProgram(ID);
 	}
@@ -103,32 +105,43 @@ public:
 	// utility uniform functions
 	void setBool(const std::string& name, bool value) const
 	{
-		glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
+		glUniform1i(getUniformLocation(name), (int)value);
 	}
 
 	void setInt(const std::string& name, int value) const
 	{
-		glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
+		glUniform1i(getUniformLocation(name), value);
 	}
 
 	void setFloat(const std::string& name, float value) const
 	{
-		glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+		glUniform1f(getUniformLocation(name), value);
 	}
 
 	void setVec2f(const std::string& name, float x, float y) const
 	{
-		glUniform2f(glGetUniformLocation(ID, name.c_str()), x, y);
+		glUniform2f(getUniformLocation(name), x, y);
 	}
 
 	void setVec2d(const std::string& name, double x, double y) const
 	{
-		glUniform2d(glGetUniformLocation(ID, name.c_str()), x, y);
+		glUniform2d(getUniformLocation(name), x, y);
 	}
 
 	void setVec4(const std::string& name, glm::vec4& v) const
 	{
-		glUniform4f(glGetUniformLocation(ID, name.c_str()), v.x, v.y, v.z, v.w);
+		glUniform4f(getUniformLocation(name), v.x, v.y, v.z, v.w);
+	}
+
+private:
+	GLint getUniformLocation(const std::string& name) const
+	{
+		if (uniformLocationCache.find(name) != uniformLocationCache.end())
+			return uniformLocationCache[name];
+		
+		GLint location = glGetUniformLocation(ID, name.c_str());
+		uniformLocationCache[name] = location;
+		return location;
 	}
 };
 

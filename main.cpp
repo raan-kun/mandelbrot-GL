@@ -10,7 +10,7 @@ bool panning = false;
 int maxIterations = 64;
 glm::dvec2 startPan = { 0.0, 0.0 };
 glm::dvec2 screenOffset = { 0.0, 0.0 };
-glm::dvec2 screenScale = { double(SCREEN_WIDTH) / 1, double(SCREEN_HEIGHT) };
+glm::dvec2 screenScale = { double(SCREEN_WIDTH) * 0.75, double(SCREEN_HEIGHT) * 1.0 };
 glm::dvec2 d_mouseLoc;
 glm::ivec2 mouseLoc;
 
