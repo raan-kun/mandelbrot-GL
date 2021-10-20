@@ -37,7 +37,7 @@ int calc_iterations()
 	return iteration;
 }
 
-basic colouring
+// basic colouring
 vec4 palette(int iterations)
 {
 	if(iterations >= u_maxIter) {
