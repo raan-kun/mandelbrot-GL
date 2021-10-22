@@ -38,32 +38,45 @@ int calc_iterations()
 }
 
 // basic colouring
-vec4 palette(int iterations)
-{
-	if(iterations >= u_maxIter) {
-		return vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	}
-	else {
-		float iter_normalised = float(iterations) / float(u_maxIter);
-		return vec4(0.0f, iter_normalised, iter_normalised, 1.0f);
-	}
-}
-
-// trig function colouring
 // vec4 palette(int iterations)
 // {
-// 	if(iterations >= u_maxIter)
-// 		return vec4(1.0f, 0.2f, 0.7f, 1.0f);
-
-// 	float n = float(iterations);
-// 	float a = 0.1f;
-// 	return vec4(
-// 		0.5f * sin(a * n) + 0.5f,
-// 		0.5f * sin(a * n + 2.094f) + 0.5f,
-// 		0.5f * sin(a * n + 4.188f) + 0.5f,
-// 		1.0f
-// 	);
+// 	if(iterations >= u_maxIter) {
+// 		return vec4(0.0f, 0.0f, 0.0f, 1.0f);
+// 	}
+// 	else {
+// 		float iter_normalised = float(iterations) / float(u_maxIter);
+// 		return vec4(0.0f, iter_normalised, iter_normalised, 1.0f);
+// 	}
 // }
+
+// trig function colouring
+vec4 palette(int iterations)
+{
+	if(iterations >= u_maxIter)
+		return vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+	float n = float(iterations);
+	float a = 0.1f;
+	// return vec4(
+	// 	0.15f * cos(a * n),
+	// 	0.15f * max(min(cos(a * n + 2.094f),1),-1) + 0.5f,
+	// 	0.33f * max(min(cos(a * n),1),-1) + 0.5f,
+	// 	1.0f
+	// );
+	return vec4(
+		0.5f * cos(a * n + 4.188f) + 0.25f,
+		0.5f * sin(a * n + 4.188f) + 0.25f,
+		0.5f * sin(a * n + 1.188f) + 0.25f,
+		// 0.5f * sin(a * n + 1.188f) + 0.25f,
+		1.0f
+	);
+	// return vec4(
+	// 	0.5f * sin(a * n) + 0.5f,
+	// 	0.5f * sin(a * n + 2.094f) + 0.5f,
+	// 	0.5f * sin(a * n + 4.188f) + 0.5f,
+	// 	1.0f
+	// );
+}
 
 void main()
 {

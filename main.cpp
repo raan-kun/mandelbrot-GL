@@ -1,7 +1,7 @@
 #include "main.h"
 
-const unsigned int SCREEN_WIDTH  = 800;
-const unsigned int SCREEN_HEIGHT = 600;
+const unsigned int SCREEN_WIDTH  = 1280;
+const unsigned int SCREEN_HEIGHT = 720;
 
 bool zoomingIn = false;
 bool zoomingOut = false;
@@ -10,7 +10,7 @@ bool panning = false;
 int maxIterations = 64;
 glm::dvec2 startPan = { 0.0, 0.0 };
 glm::dvec2 screenOffset = { 0.0, 0.0 };
-glm::dvec2 screenScale = { double(SCREEN_WIDTH) * 0.75, double(SCREEN_HEIGHT) * 1.0 };
+glm::dvec2 screenScale = { double(SCREEN_WIDTH) * 0.5, double(SCREEN_HEIGHT) * 1.0 };
 glm::dvec2 d_mouseLoc;
 glm::ivec2 mouseLoc;
 
@@ -39,6 +39,7 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	// load OpenGL function pointers
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -107,10 +108,10 @@ int main()
 		double frameTime = afterTime - currentTime;
 
 		std::stringstream s;
-		s << "FPS: " << fps << " FrameTime: " << frameTime <<
+		s << "FPS: " << fps <<// " FrameTime: " << frameTime <<
 			" // Iterations: " << maxIterations <<
-			" // Region: (" << fractalTL.x << ", " << fractalTL.y << ") ->" <<
-			" (" << fractalBR.x << ", " << fractalBR.y << ")" <<
+			" // Region: " << fractalTL.x << "+" << fractalTL.y << "i, " <<
+			fractalBR.x << "+" << fractalBR.y << "i" <<
 			" // Mouse loc: (" << mouseLoc.x << ", " << mouseLoc.y << ")";
 		glfwSetWindowTitle(window, s.str().c_str());
 
@@ -162,6 +163,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			maxIterations -= 64;
 			if (maxIterations < 64) maxIterations = 64;
 			break;
+		case GLFW_KEY_LEFT:
+			maxIterations = (maxIterations + 1) / 2;
+			break;
+		case GLFW_KEY_RIGHT:
+			maxIterations *= 2;
+			break;
 		case GLFW_KEY_F1:
 			hq_render();
 			break;
@@ -195,19 +202,29 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 	}
 }
 
+// mouse wheel callback
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	glm::dvec2 mouseBeforeZoom;
+	screenToWorld(mouseLoc, mouseBeforeZoom);
+	if (yoffset < 0)
+		screenScale *= 0.7f;
+	if (yoffset > 0)
+		screenScale *= 1.3f;
+	glm::dvec2 mouseAfterZoom;
+	screenToWorld(mouseLoc, mouseAfterZoom);
+	screenOffset += (mouseBeforeZoom - mouseAfterZoom);
+}
+
 void camera_movement(GLFWwindow* window)
 {
 	glm::dvec2 mouseBeforeZoom;
 	screenToWorld(mouseLoc, mouseBeforeZoom);
 
-	if (zoomingIn) {
-		screenScale.x *= 1.03;
-		screenScale.y *= 1.03;
-	}
-	if (zoomingOut) {
-		screenScale.x *= 0.97;
-		screenScale.y *= 0.97;
-	}
+	if (zoomingIn)
+		screenScale *= 1.03;
+	if (zoomingOut)
+		screenScale *= 0.97;
 
 	glm::dvec2 mouseAfterZoom;
 	screenToWorld(mouseLoc, mouseAfterZoom);
