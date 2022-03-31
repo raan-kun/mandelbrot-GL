@@ -9,6 +9,6 @@ An interactive, GPU-accelerated Mandelbrot Set viewer using OpenGL.
 - GLM
 
 ### Usage
-Load solution into Visual Studio and compile.
+Load solution into Visual Studio and compile. Note that all 3 dependencies are dynamically linked, so ensure that your compiler can find the headers.
 
 Pan the view by clicking and dragging. Zoom in and out using either the scroll wheel or by holding the `R` or `F` key.
