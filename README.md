@@ -10,7 +10,7 @@ When run, the program launches an OpenGL context in a window and begins listenin
 This program has the following dependencies:
 - An OpenGL-compatible system
 - GLFW3
-- GLAD with GL_ARB_gpu_shader_fp64 extension enabled
+- GLAD with GL_ARB_gpu_shader_fp64 extension enabled (this can be generated [here](https://glad.dav1d.de/))
 - GLM
 
 Load solution into Visual Studio and build & run.
